@@ -3,6 +3,7 @@
 import socket
 import argparse
 import csv
+import sys
 
 from concurrent.futures import ThreadPoolExecutor
 
@@ -43,6 +44,9 @@ def resolve_host(subdomain):
         addrinfo = socket.getaddrinfo(subdomain + "." + hostname, None)
     except socket.gaierror:
         pass
+    except:
+        print("unexpected error:", sys.exc_info()[1])
+        
     return (subdomain + "." + hostname, set(map(lambda i: i[4][0], addrinfo)))
     
 executor = ThreadPoolExecutor(max_workers=thread_no)
